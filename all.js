@@ -129,16 +129,34 @@ addBtn.addEventListener("click", function (e) {
   newTicket.price = ticketPrice.value;
   newTicket.rate = ticketRate.value;
 
-  let message = `<i class="fas fa-exclamation-circle"></i><span>必填!</span>`;
+  let hasValue = true;
 
   allTicketName.forEach(function (item, index) {
-    if (document.querySelector(`#${item}`).value == "") {
-      document.querySelector(`#${item}-message`).innerHTML = message;
-      return;
-    } else {
-      document.querySelector(`#${item}-message`).innerHTML = "";
+    let message = `<span>必填!</span>`;
+    let itemDom = document.querySelector(`#${item}`);
+    let itemMessage = document.querySelector(`#${item}-message`);
+
+    if (itemDom.value == "") {//若未填資料
+      itemMessage.innerHTML = message;
+      hasValue = false;
+    } else {//若有填資料
+      itemMessage.innerHTML = "";
+      hasValue = true;
     }
   })
-  data.push(newTicket);
-  defaultTicket();
-})
+
+  if (ticketRate.value > 10 || ticketRate.value < 1) {//限制星級範圍
+    document.querySelector(`#ticketRate-message`).innerHTML = `<span>請填寫${ticketRate.getAttribute("min")}到${ticketRate.getAttribute("max")}之間的數字</span>`;
+    hasValue = false;
+  }
+
+    if (hasValue == false) {
+      return;//若有未填則不新增資料
+    }
+    data.push(newTicket);
+    defaultTicket();
+
+    allTicketName.forEach(function (item, index) {//清空表格
+      document.querySelector(`#${item}`).value = "";
+    })
+  })
