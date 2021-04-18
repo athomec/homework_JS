@@ -129,7 +129,7 @@ addBtn.addEventListener("click", function (e) {
   newTicket.price = ticketPrice.value;
   newTicket.rate = ticketRate.value;
 
-  let hasValue = true;
+  let hasValue = 0;
 
   allTicketName.forEach(function (item, index) {
     let message = `<span>必填!</span>`;
@@ -138,19 +138,19 @@ addBtn.addEventListener("click", function (e) {
 
     if (itemDom.value == "") {//若未填資料
       itemMessage.innerHTML = message;
-      hasValue = false;
+      hasValue +=1;
     } else {//若有填資料
       itemMessage.innerHTML = "";
-      hasValue = true;
+      hasValue += 0;
     }
   })
 
   if (ticketRate.value > 10 || ticketRate.value < 1) {//限制星級範圍
     document.querySelector(`#ticketRate-message`).innerHTML = `<span>請填寫${ticketRate.getAttribute("min")}到${ticketRate.getAttribute("max")}之間的數字</span>`;
-    hasValue = false;
+    hasValue +=1;
   }
 
-    if (hasValue == false) {
+    if (hasValue >0) {
       return;//若有未填則不新增資料
     }
     data.push(newTicket);
